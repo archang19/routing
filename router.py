@@ -56,7 +56,5 @@ class Router:
         return solution
 
     def heuristic(self, start, end):
-        dx = abs(start[0] - end[0])
-        dy = abs(start[1] - end[1])
-        return dx + dy
+        return geometry.dist_mi(start, end)
 
