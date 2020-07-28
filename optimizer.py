@@ -53,18 +53,17 @@ class Optimizer:
         until all delivery locations have been visited
         """
         cur_loc = self.source
-        visited = set()
+        not_visited = set(self.deliveries)
         sol = []
-        while len(visited) < len(self.deliveries):
+        while len(not_visited) > 0:
             min_cost = maxsize
             min_deliv = None
-            for delivery in self.deliveries:
-                if delivery not in visited:
-                    additional_cost = geometry.dist_mi(cur_loc, delivery.loc)
-                    if additional_cost < min_cost:
-                        min_cost = additional_cost
-                        min_deliv = delivery
-            visited.add(min_deliv)
+            for delivery in not_visited:
+                additional_cost = geometry.dist_mi(cur_loc, delivery.loc)
+                if additional_cost < min_cost:
+                    min_cost = additional_cost
+                    min_deliv = delivery
+            not_visited.remove(min_deliv)
             sol.append(min_deliv)
         return sol
 

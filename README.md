@@ -4,7 +4,10 @@
 
 **Methods**:
 1. A* Search Algorithm to approximate shortest path between 2 geo-coordinates
-2. Traveling Salesman solution to optimize delivery order
+2. Traveling Salesman solutions to optimize delivery order
+   2a. Brute force solution checking every permutation. O(n!)
+   2b. Greedy algorithm that takes shortest delivery each time.
+   2c. Two-opt algorithm that repeatedly swaps deliveries until convergence.
 
 **Design**:
 A DeliveryPlanner contains:
