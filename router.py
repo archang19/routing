@@ -30,7 +30,7 @@ class Router:
             current = q.get()
             if current == end:
                 backtrack = end
-                while backtrack != start:
+                while backtrack != start and not(came_from[backtrack] is None):
                     prev = came_from[backtrack]
                     segs = self.mapper.get_segments(prev)
                     for seg in segs:
@@ -39,7 +39,9 @@ class Router:
                             dist_traveled += conversions.dist_mi(seg.start, seg.end)
                             backtrack = prev
                             break
+                route.reverse()
                 solution = Route(route, dist_traveled)
+                return solution
 
             children = self.mapper.get_segments(current)
             for next in children:
@@ -57,3 +59,4 @@ class Router:
         dx = abs(start[0] - end[0])
         dy = abs(start[1] - end[1])
         return dx + dy
+

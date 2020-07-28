@@ -22,3 +22,21 @@ def dist_km(coord1, coord2):
 def dist_mi(coord1, coord2):
     milesPerKm = 1 / 1.609344
     return dist_km(coord1, coord2) * milesPerKm
+
+
+
+def angleOfLine(line):
+    angle = math.atan2(line.end[0] - line.start[0], line.end[1] - line.start[1])
+    result = rad2deg(angle)
+    if result < 0:
+        result += 360
+    return result
+
+
+def angleBetween2Lines(line1, line2):
+    angle1 = math.atan2(line1.end[0] - line1.start[0], line1.end[1] - line1.start[1])
+    angle2 = math.atan2(line2.end[0] - line2.start[0], line2.end[1] - line2.start[1])
+    result = rad2deg(angle2 - angle1)
+    if result < 0:
+        result += 360
+    return result

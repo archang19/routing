@@ -7,6 +7,7 @@ class Segment:
         self.start = startCoord
         self.end = endCoord
         self.name = name
+        self.name = self.name.rstrip()
 
 class Mapper:
     def __init__(self, file_path):
@@ -53,16 +54,17 @@ class Mapper:
             res = res.union(self.endToSegment[coord])
         return res
 
-
+"""
 m = Mapper('mapdata.txt')
-
 s = (34.0547000, -118.4794734)
-e = (34.0857385, -118.4956111)
+e = (34.0544590, -118.4801137)
 r = router.Router(m)
-a1 = r.find_route(s, e)
+sol = r.find_route(s,e)
+print(sol)
 
-print(a1.dist_traveled)
-print(len(a1.route))
+"""
+
+
 
 
 

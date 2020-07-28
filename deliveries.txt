@@ -1,0 +1,4 @@
+34.0625329 -118.4470263
+34.0687443 -118.4449195:B-Plate salmon (Eng IV)
+34.0616291 -118.4416199:Pabst Blue Ribbon beer (Hilgard and Weyburn)
+34.0656797 -118.4505131:Chicken tenders (Levering and Strathmore)
