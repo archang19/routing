@@ -3,9 +3,13 @@
 import router
 import geometry
 import mapper
-import delivery
 import command
 import optimizer
+
+class Delivery:
+    def __init__(self, item, loc):
+        self.item = item
+        self.loc = loc
 
 class DeliveryPlanner:
     def __init__(self, path_to_map_file, path_to_deliveries_file):
@@ -58,7 +62,7 @@ class DeliveryPlanner:
                     l = raw_data[i].split(":")
                     coords = l[0].split()
                     item = l[1].split("(")[0]
-                    d = delivery.Delivery(item, (float(coords[0]), float(coords[1])))
+                    d = Delivery(item, (float(coords[0]), float(coords[1])))
                     self.deliveries.append(d)
                 i += 1
 
