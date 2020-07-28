@@ -9,6 +9,30 @@ import optimizer
 
 class DeliveryPlanner:
     def __init__(self, path_to_map_file, path_to_deliveries_file):
+        """
+        A class used to create final delivery routing instructions
+        ...
+        Attributes
+        ----------
+        :type mapper: Mapper
+            object containing all relevant geocoordinate/segment information
+        :type router: Router
+            object for calculating optimal route between 2 coordinates
+        :type deliveries: Delivery
+            list of deliveries to be made
+        :type commands: DeliveryCommand
+            list of delivery commands (e.g. proceed, turn, deliver)
+        :type route: Route
+            stores current route that is being converted to delivery instructions
+        :type prevStreet: Segment
+            stores previous street segment, for use in calculating angles for turns
+        :type totalDistanceTravelled: float
+            stores total distance traveled (includes all deliveries and return trip)
+        :type lastProceedIndex: int
+            stores index of last proceed commmand in command list
+        :type justDelivered: bool
+            stores whether a delivery was just made
+        """
         self.mapper = mapper.Mapper(path_to_map_file)
         self.router = router.Router(self.mapper)
         self.deliveries = []
@@ -40,9 +64,6 @@ class DeliveryPlanner:
     def generate_delivery_plan(self):
         cur = self.depot
         last_place = None
-        self.just_delivered = False
-        self.prevStreet = None
-        self.lastProceedIndex = -1
 
         for i in range(len(self.deliveries)):
             next = self.deliveries[i].loc
@@ -51,7 +72,7 @@ class DeliveryPlanner:
 
             self.route = self.router.find_route(cur, next)
             if self.route.route is None or self.route.dist_traveled is None:
-                return 0
+                return False
 
             self.just_delivered = True
             self.plan_route()
@@ -64,7 +85,7 @@ class DeliveryPlanner:
         self.just_delivered = True
         self.plan_route()
 
-        return 1
+        return True
 
     def plan_route(self):
         streets = self.route.route
@@ -124,9 +145,12 @@ class DeliveryPlanner:
             print(com.description())
         print("TOTAL DISTANCE TRAVELED: " + "{:.2f}".format(self.totalDistanceTravelled) + " MILES")
 
+
 dm = DeliveryPlanner('mapdata.txt','deliveries.txt')
-dm.generate_delivery_plan()
-dm.print_directions()
+if dm.generate_delivery_plan():
+    dm.print_directions()
+else:
+    print ("No route found")
 
 
 
