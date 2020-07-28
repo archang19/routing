@@ -4,6 +4,7 @@ import router
 import geometry
 import mapper
 import delivery
+import command
 
 class DeliveryPlanner:
     def __init__(self, path_to_map_file, path_to_deliveries_file):
@@ -38,7 +39,7 @@ class DeliveryPlanner:
         self.just_delivered = False
         self.prevStreet = None
 
-        dCommand = DeliveryCommand()
+        dCommand = command.DeliveryCommand()
         self.lastProceedIndex = -1
 
         for i in range(len(self.deliveries)):
@@ -78,17 +79,17 @@ class DeliveryPlanner:
             if self.lastProceedIndex != -1 and curStreet.name == self.commands[self.lastProceedIndex].streetName and (not self.justDelivered):
                 self.commands[self.lastProceedIndex].increaseDistance(dist)
                 continue
-            dCommand = DeliveryCommand()
+            dCommand = command.DeliveryCommand()
             if angleTurn < 1 or angleTurn > 359:
                 dCommand.init_as_proceed_command(direction, curStreet.name, dist)
             elif angleTurn >= 1 and angleTurn < 180:
-                turn_command = DeliveryCommand()
+                turn_command = command.DeliveryCommand()
                 turn_command.init_as_turn_command("LEFT", curStreet.name)
                 if curStreet != streets[0] and not self.justDelivered:
                     self.commands.append(turn_command)
                 dCommand.init_as_proceed_command(direction, curStreet.name, dist)
             else:
-                turn_command = DeliveryCommand()
+                turn_command = command.DeliveryCommand()
                 turn_command.init_as_turn_command("RIGHT", curStreet.name)
                 if curStreet != streets[0] and not self.justDelivered:
                     self.commands.append(turn_command)
@@ -119,40 +120,7 @@ class DeliveryPlanner:
             return "EAST"
 
 
-class DeliveryCommand:
-    def __init__(self):
-        self.type = ""
-        self.streetName = None
-        self.direction = None
-        self.distance = None
-        self.item = None
 
-    def init_as_proceed_command (self, dir, streetName, dist):
-        self.type = "PROCEED"
-        self.streetName = streetName
-        self.direction = dir
-        self.distance = dist
-
-    def init_as_turn_command(self, dir, streetName):
-        self.type = "TURN"
-        self.streetName = streetName
-        self.direction = dir
-        self.distance = 0
-
-    def init_as_deliver_command(self, item):
-        self.type = "DELIVER"
-        self.item = item
-
-    def increaseDistance (self, amt):
-        self.distance += amt
-
-    def description(self):
-        if self.type == "TURN":
-            return "TURN " + self.direction + " ON " + self.streetName
-        elif self.type == "PROCEED":
-            return "PROCEED " + self.direction + " ON " + self.streetName + " FOR " + "{:.2f}".format(self.distance) + " MILES"
-        elif self.type == "DELIVER":
-            return "DELIVER " + self.item
 
 dm = DeliveryPlanner('mapdata.txt','deliveries.txt')
 dm.generate_delivery_plan()
