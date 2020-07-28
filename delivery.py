@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import router
-import conversions
+import geometry
 import mapper
 
 class Delivery:
@@ -72,11 +72,11 @@ class DeliveryPlanner:
         for curStreet in streets:
             angleTurn = 0
             if curStreet != streets[0]:
-                angleTurn = conversions.angleBetween2Lines(self.prevStreet, curStreet)
+                angleTurn = geometry.angleBetween2Lines(self.prevStreet, curStreet)
             self.prevStreet = curStreet
-            angle = conversions.angleOfLine(curStreet)
+            angle = geometry.angleOfLine(curStreet)
             direction = self.set_direction(angle)
-            dist = conversions.dist_mi(curStreet.start, curStreet.end)
+            dist = geometry.dist_mi(curStreet.start, curStreet.end)
             self.totalDistanceTravelled += dist
 
             if self.lastProceedIndex != -1 and curStreet.name == self.commands[self.lastProceedIndex].streetName and (not self.justDelivered):
@@ -162,7 +162,7 @@ dm = DeliveryPlanner('mapdata.txt','deliveries.txt')
 dm.generate_delivery_plan()
 for com in dm.commands:
     print(com.description())
-
+print(dm.totalDistanceTravelled)
 
 
 

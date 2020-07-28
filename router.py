@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from queue import PriorityQueue
-import conversions
+import geometry
 
 class Route:
     def __init__(self, route, dist_traveled):
@@ -36,7 +36,7 @@ class Router:
                     for seg in segs:
                         if seg.end == backtrack:
                             route.append(seg)
-                            dist_traveled += conversions.dist_mi(seg.start, seg.end)
+                            dist_traveled += geometry.dist_mi(seg.start, seg.end)
                             backtrack = prev
                             break
                 route.reverse()
@@ -46,7 +46,7 @@ class Router:
             children = self.mapper.get_segments(current)
             for next in children:
                 next_coord = next.end
-                new_cost = cost_so_far[current] + conversions.dist_mi(current, next_coord)
+                new_cost = cost_so_far[current] + geometry.dist_mi(current, next_coord)
                 if next_coord not in cost_so_far or new_cost < cost_so_far[next_coord]:
                     cost_so_far[next_coord] = new_cost
                     priority = new_cost + self.heuristic(next_coord, next_coord)
