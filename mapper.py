@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 
 class Segment:
-    def __init__(self, startCoord, endCoord, name):
+    def __init__(self, start, end, name):
         """
-        :type startCoord: tuple
-        :type endCoord: tuple
+        A class used to represent a street segment
+        ...
+        Attributes
+        ----------
+        :type start: tuple
+            start coordinate
+        :type end: tuple
+            end coordinate
         :type name: string
+            name of street
         """
-        self.start = startCoord
-        self.end = endCoord
+        self.start = start
+        self.end = end
         self.name = name.rstrip()
 
 class Mapper:
@@ -16,38 +23,32 @@ class Mapper:
         """
         A class used to efficiently retrieve map data
         ...
-
         Attributes
         ----------
         startToSegment : dict
             maps start coordinate to set of street segments
         endToSegment : dict
             maps end coordinate to set of street segments
-        sound : str
-            the sound that the animal makes
-        num_legs : int
-            the number of legs the animal has (default 4)
+        file_path : str
+            path to map data
 
         Methods
         -------
-        says(sound=None)
-            Prints the animals name and what sound it makes
+        load(self)
+            loads data into coordinate to segment dictionaries
+        get_segments(self, coord)
+            returns set of all segments that begin with coord
         """
 
         self.startToSegment = {}
         self.endToSegment = {}
 
         self.file_path = file_path
-        self.load(self.file_path)
+        self.load()
 
-    def load(self, file_path):
-        """
-        :param file_path: path to map data
-        :type string
-        :returns: nothing
-        """
+    def load(self):
         try:
-            with open(file_path) as f:
+            with open(self.file_path) as f:
                 raw_data = f.readlines()
         except:
             return False
@@ -73,12 +74,6 @@ class Mapper:
             i = j+1
 
     def get_segments(self, coord):
-        """
-        :param coord: start coordinate
-        :type coord: tuple
-        :returns: all street segments that start with coordinate
-        :rtype: set
-        """
         res = set()
         if coord in self.startToSegment.keys():
             res = res.union(self.startToSegment[coord])
