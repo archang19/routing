@@ -32,6 +32,10 @@ class DeliveryPlanner:
             stores index of last proceed commmand in command list
         :type justDelivered: bool
             stores whether a delivery was just made
+        :type depot: tuple
+            start coordinates of depot
+        :type optimizer: Optimizer
+            object for finding optimal delivery order
         """
         self.mapper = mapper.Mapper(path_to_map_file)
         self.router = router.Router(self.mapper)
@@ -44,14 +48,14 @@ class DeliveryPlanner:
         self.justDelivered = False
 
         with open(path_to_deliveries_file) as f:
-            self.raw_data = f.readlines()
+            raw_data = f.readlines()
             i = 0
-            while i < len(self.raw_data):
+            while i < len(raw_data):
                 if i == 0:
-                    initial_coords = self.raw_data[i].split()
+                    initial_coords = raw_data[i].split()
                     self.depot = (float(initial_coords[0]), float(initial_coords[1]))
                 else:
-                    l = self.raw_data[i].split(":")
+                    l = raw_data[i].split(":")
                     coords = l[0].split()
                     item = l[1].split("(")[0]
                     d = delivery.Delivery(item, (float(coords[0]), float(coords[1])))
