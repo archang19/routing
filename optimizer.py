@@ -68,3 +68,35 @@ class Optimizer:
             sol.append(min_deliv)
         return sol
 
+    def two_opt_TSP(self):
+        """
+        :return: re-ordered delivery list
+
+        Until the cost is minimizes, swap 2 elements in the ordering if it
+        results in reduced cost
+        """
+        cur = list(range(0, len(self.deliveries)))
+        best = cur
+        improved = True
+        while improved:
+            improved = False
+            for i in range(0, len(self.deliveries) - 1):
+                for j in range(i+1, len(self.deliveries)):
+                    if j - i == 1: continue
+                    new_route = cur[:] # copy list
+                    new_route[i], new_route[j] = new_route[j], new_route[i]
+                    if self.get_cost(new_route) < self.get_cost(best):
+                        best = new_route
+                        improved = True
+            cur = best
+        return [self.deliveries[i] for i in best]
+
+    def get_cost(self, ordering):
+        cost = 0
+        cur_loc = self.source
+        for j in ordering:
+            cost += geometry.dist_mi(cur_loc, self.deliveries[j].loc)
+            cur_loc = self.deliveries[j].loc
+        cost += geometry.dist_mi(cur_loc, self.source)
+        return cost
+

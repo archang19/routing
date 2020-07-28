@@ -78,7 +78,9 @@ class DeliveryPlanner:
 
         self.optimizer = optimizer.Optimizer(self.deliveries, self.depot)
         #self.deliveries = self.optimizer.simple_TSP()
-        self.deliveries = self.optimizer.greedy_TSP()
+        #self.deliveries = self.optimizer.greedy_TSP()
+        self.deliveries = self.optimizer.two_opt_TSP()
+
 
     def generate_delivery_plan(self):
         cur = self.depot
