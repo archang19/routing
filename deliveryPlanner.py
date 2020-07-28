@@ -8,6 +8,16 @@ import optimizer
 
 class Delivery:
     def __init__(self, item, loc):
+        """
+        A trivial class for use in DeliveryPlanner
+        ...
+        Attributes
+        ----------
+        :type item: string
+            name of item to be delivered
+        :type loc: tuple
+            coordinates of delivery location
+        """
         self.item = item
         self.loc = loc
 

@@ -6,10 +6,25 @@ from itertools import permutations
 
 class Optimizer:
     def __init__(self, deliveries, source):
+        """
+        :param deliveries: list of Delivery objects
+        :param source: tuple for source (depot) coordinates
+
+        A class for optimizing delivery order. Implements solution to
+        Travelling Salesman Problem.
+        """
         self.deliveries = deliveries
         self.source = source
 
     def simple_TSP(self):
+        """
+        :return: re-ordered delivery list
+
+        Naive solution to Travelling Salesman Problem. Generates all possible
+        permutations of ordering. Uses Euclidean distance to approximate true
+        distance, as exact computation would be too expensive.
+        """
+
         min_path = maxsize
         min_perm = 0
 
