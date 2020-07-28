@@ -5,6 +5,7 @@ import geometry
 import mapper
 import delivery
 import command
+import optimizer
 
 class DeliveryPlanner:
     def __init__(self, path_to_map_file, path_to_deliveries_file):
@@ -33,13 +34,14 @@ class DeliveryPlanner:
                     self.deliveries.append(d)
                 i += 1
 
+        self.optimizer = optimizer.Optimizer(self.deliveries, self.depot)
+        self.deliveries = self.optimizer.simple_TSP()
+
     def generate_delivery_plan(self):
         cur = self.depot
         last_place = None
         self.just_delivered = False
         self.prevStreet = None
-
-        # dCommand = command.DeliveryCommand()
         self.lastProceedIndex = -1
 
         for i in range(len(self.deliveries)):
@@ -84,12 +86,10 @@ class DeliveryPlanner:
                 pass
             elif angleTurn >= 1 and angleTurn < 180:
                 turn_command = command.DeliveryCommand("TURN", "LEFT", curStreet.name, None, None)
-                #turn_command.init_as_turn_command("LEFT", curStreet.name)
                 if curStreet != streets[0] and not self.justDelivered:
                     self.commands.append(turn_command)
             else:
                 turn_command = command.DeliveryCommand("TURN", "RIGHT", curStreet.name, None, None)
-                #turn_command.init_as_turn_command("RIGHT", curStreet.name)
                 if curStreet != streets[0] and not self.justDelivered:
                     self.commands.append(turn_command)
 
@@ -118,14 +118,15 @@ class DeliveryPlanner:
         else:
             return "EAST"
 
-
-
+    def print_directions(self):
+        print("STARTING FROM: " + str(self.depot))
+        for com in self.commands:
+            print(com.description())
+        print("TOTAL DISTANCE TRAVELED: " + "{:.2f}".format(self.totalDistanceTravelled) + " MILES")
 
 dm = DeliveryPlanner('mapdata.txt','deliveries.txt')
 dm.generate_delivery_plan()
-for com in dm.commands:
-    print(com.description())
-print(dm.totalDistanceTravelled)
+dm.print_directions()
 
 
 

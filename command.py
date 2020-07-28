@@ -1,28 +1,11 @@
 #!/usr/bin/env python3
 
-
 class DeliveryCommand:
     def __init__(self, type, direction=None, streetName=None, distance=None, item=None):
         self.type = type
         self.streetName =streetName
         self.direction = direction
         self.distance = distance
-        self.item = item
-
-    def init_as_proceed_command (self, dir, streetName, dist):
-        self.type = "PROCEED"
-        self.streetName = streetName
-        self.direction = dir
-        self.distance = dist
-
-    def init_as_turn_command(self, dir, streetName):
-        self.type = "TURN"
-        self.streetName = streetName
-        self.direction = dir
-        self.distance = 0
-
-    def init_as_deliver_command(self, item):
-        self.type = "DELIVER"
         self.item = item
 
     def increaseDistance (self, amt):
