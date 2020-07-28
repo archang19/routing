@@ -39,7 +39,7 @@ class DeliveryPlanner:
         self.just_delivered = False
         self.prevStreet = None
 
-        dCommand = command.DeliveryCommand()
+        # dCommand = command.DeliveryCommand()
         self.lastProceedIndex = -1
 
         for i in range(len(self.deliveries)):
@@ -54,7 +54,7 @@ class DeliveryPlanner:
             self.just_delivered = True
             self.plan_route()
 
-            dCommand.init_as_deliver_command(self.deliveries[i].item)
+            dCommand = command.DeliveryCommand("DELIVER",None,None,None,self.deliveries[i].item)
             self.commands.append(dCommand)
             cur = next
 
@@ -79,22 +79,21 @@ class DeliveryPlanner:
             if self.lastProceedIndex != -1 and curStreet.name == self.commands[self.lastProceedIndex].streetName and (not self.justDelivered):
                 self.commands[self.lastProceedIndex].increaseDistance(dist)
                 continue
-            dCommand = command.DeliveryCommand()
-            if angleTurn < 1 or angleTurn > 359:
-                dCommand.init_as_proceed_command(direction, curStreet.name, dist)
-            elif angleTurn >= 1 and angleTurn < 180:
-                turn_command = command.DeliveryCommand()
-                turn_command.init_as_turn_command("LEFT", curStreet.name)
-                if curStreet != streets[0] and not self.justDelivered:
-                    self.commands.append(turn_command)
-                dCommand.init_as_proceed_command(direction, curStreet.name, dist)
-            else:
-                turn_command = command.DeliveryCommand()
-                turn_command.init_as_turn_command("RIGHT", curStreet.name)
-                if curStreet != streets[0] and not self.justDelivered:
-                    self.commands.append(turn_command)
-                dCommand.init_as_proceed_command(direction, curStreet.name, dist)
 
+            if angleTurn < 1 or angleTurn > 359:
+                pass
+            elif angleTurn >= 1 and angleTurn < 180:
+                turn_command = command.DeliveryCommand("TURN", "LEFT", curStreet.name, None, None)
+                #turn_command.init_as_turn_command("LEFT", curStreet.name)
+                if curStreet != streets[0] and not self.justDelivered:
+                    self.commands.append(turn_command)
+            else:
+                turn_command = command.DeliveryCommand("TURN", "RIGHT", curStreet.name, None, None)
+                #turn_command.init_as_turn_command("RIGHT", curStreet.name)
+                if curStreet != streets[0] and not self.justDelivered:
+                    self.commands.append(turn_command)
+
+            dCommand = command.DeliveryCommand("PROCEED", direction, curStreet.name, dist, None)
             self.commands.append(dCommand)
             self.lastProceedIndex = len(self.commands) - 1
             self.justDelivered = False

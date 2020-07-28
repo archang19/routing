@@ -2,12 +2,12 @@
 
 
 class DeliveryCommand:
-    def __init__(self):
-        self.type = ""
-        self.streetName = None
-        self.direction = None
-        self.distance = None
-        self.item = None
+    def __init__(self, type, direction=None, streetName=None, distance=None, item=None):
+        self.type = type
+        self.streetName =streetName
+        self.direction = direction
+        self.distance = distance
+        self.item = item
 
     def init_as_proceed_command (self, dir, streetName, dist):
         self.type = "PROCEED"
