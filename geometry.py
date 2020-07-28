@@ -40,3 +40,24 @@ def angleBetween2Lines(line1, line2):
     if result < 0:
         result += 360
     return result
+
+
+def angle2Direction(angle):
+    if angle >= 0 and angle < 22.5:
+        return "EAST"
+    elif angle >= 22.5 and angle < 67.5:
+        return "NORTHEAST"
+    elif angle >= 67.5 and angle < 112.5:
+        return "NORTH"
+    elif angle >= 112.5 and angle < 157.5:
+        return "NORTHWEST"
+    elif angle >= 157.5 and angle < 202.5:
+        return "WEST"
+    elif angle >= 202.5 and angle < 247.5:
+        return "SOUTHWEST"
+    elif angle >= 247.5 and angle < 292.5:
+        return "SOUTH"
+    elif angle >= 292.5 and angle < 337.5:
+        return "SOUTHEAST"
+    else:
+        return "EAST"
